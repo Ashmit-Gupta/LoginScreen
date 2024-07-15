@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpScreen">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardView"
+        android:layout_margin="20dp"
+        android:background="@drawable/card_view"
+        app:cardBackgroundColor="#EEFFFFFF"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+            <TextView
+                android:id="@+id/textViewSignUp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Sign-Up"
+                android:textColor="@color/purple"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/emailId"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/login_edittext"
+                android:drawableStart="@drawable/baseline_email_24"
+                android:drawablePadding="8dp"
+                android:elevation="6dp"
+                android:hint="Your E-mail"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:shadowColor="@color/black"
+                android:shadowDy="10"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSignUp" />
+
+            <EditText
+                android:id="@+id/nameSignUp"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/login_edittext"
+                android:drawableStart="@drawable/baseline_person_24"
+                android:drawablePadding="8dp"
+                android:elevation="6dp"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:shadowColor="@color/black"
+                android:shadowDy="10"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/emailId"
+                app:layout_constraintStart_toStartOf="@+id/emailId"
+                app:layout_constraintTop_toBottomOf="@+id/emailId" />
+
+            <EditText
+                android:id="@+id/passwordSignUp"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/login_edittext"
+                android:drawableLeft="@drawable/baseline_lock_24"
+                android:drawablePadding="8dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/nameSignUp"
+                app:layout_constraintStart_toStartOf="@+id/nameSignUp"
+                app:layout_constraintTop_toBottomOf="@id/nameSignUp" />
+
+            <EditText
+                android:id="@+id/repeatPwdSignUp"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/login_edittext"
+                android:drawableStart="@drawable/baseline_password_24"
+                android:drawablePadding="8dp"
+                android:hint="Repeat-password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/passwordSignUp"
+                app:layout_constraintStart_toStartOf="@+id/passwordSignUp"
+                app:layout_constraintTop_toBottomOf="@id/passwordSignUp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/signUpBtn"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
+                android:backgroundTint="@color/purple"
+                android:text="Sign-Up"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                app:cornerRadius="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/repeatPwdSignUp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginBtn"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/purple"
+                android:text="Login"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                app:cornerRadius="15dp"
+                app:layout_constraintEnd_toEndOf="@+id/signUpBtn"
+                app:layout_constraintStart_toStartOf="@+id/signUpBtn"
+                app:layout_constraintTop_toBottomOf="@id/signUpBtn" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/googleSignUpBtn"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#E0E0E0"
+                android:text="Google"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                app:cornerRadius="10dp"
+                app:iconSize="30dp"
+                app:iconGravity="start"
+                app:icon="@drawable/google"
+                app:iconPadding="2dp"
+                app:iconTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/loginBtn"
+                app:layout_constraintStart_toStartOf="@+id/loginBtn"
+                app:layout_constraintTop_toBottomOf="@id/loginBtn" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="USer IMG"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:textSize="20sp"
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogOut"
+        android:text="Log Out"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btnDeleteAcc"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="Delete Acc"
+        app:layout_constraintEnd_toEndOf="@+id/btnLogOut"
+        app:layout_constraintStart_toStartOf="@+id/btnLogOut"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogOut" />
+
+    <Button
+        android:id="@+id/UpdateEmail"
+        android:layout_width="160dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:text="Update Email"
+        app:layout_constraintEnd_toEndOf="@+id/btnDeleteAcc"
+        app:layout_constraintStart_toStartOf="@+id/btnDeleteAcc"
+        app:layout_constraintTop_toBottomOf="@+id/btnDeleteAcc" />
+
+
+<!--    <Button-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:id="@+id/btnResetPwd"-->
+<!--        android:layout_width="160dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Delete Acc"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/btnLogOut"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/btnLogOut"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btnLogOut" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
