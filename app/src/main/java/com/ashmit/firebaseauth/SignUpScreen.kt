@@ -30,7 +30,6 @@ class SignUpScreen : AppCompatActivity() {
     }
 
     private lateinit var googleSignInClient : GoogleSignInClient
-
     private lateinit var auth: FirebaseAuth
     private lateinit var email: String
     private lateinit var password: String
@@ -45,11 +44,11 @@ class SignUpScreen : AppCompatActivity() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            // Initializing FirebaseAuth
+            auth = FirebaseAuth.getInstance()
             insets
         }
 
-        // Initializing FirebaseAuth
-        auth = FirebaseAuth.getInstance()
 
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -65,77 +64,40 @@ class SignUpScreen : AppCompatActivity() {
             launcher.launch(signInClient)
         }
 
-
-
-        val actionCodeSettings = actionCodeSettings {
-            url = "https://ashmit.page.link/Tbeh"
-            handleCodeInApp = true
-            setIOSBundleId("IOS mai khol rha h kya chore ")
-            setAndroidPackageName(
-                "com.ashmit.firebaseauth",
-                true,
-                "1"
-            )
-
-        }
-        binding.signUpBtn.setOnClickListener {
+        binding.signUpBtn.setOnClickListener{
             getSignUpInputs()
-            if (checkCredentials()) {
-                //sending the link on the email
-                auth.sendSignInLinkToEmail(email , actionCodeSettings).addOnCompleteListener{
-                    task->
-                    if(task.isSuccessful){
-                        Toast.makeText(this, "Email Sent", Toast.LENGTH_LONG).show()
-                    }
-                }.addOnFailureListener{
-                    Toast.makeText(this, "Failed to Send Email ${it.message}", Toast.LENGTH_LONG).show()
-                    Log.d("Email Failed" , "${it.message}")
-                }
-
-                //
-                val intent = intent
-                val emailLink = intent.data.toString()
-                if(auth.isSignInWithEmailLink(emailLink)){
-//                    val email =
-
-                    auth.signInWithEmailLink(email , emailLink).addOnCompleteListener{
-                        task->
+            if(checkCredentials()){
+                auth.createUserWithEmailAndPassword(email ,password)
+                    .addOnCompleteListener{task->
                         if(task.isSuccessful){
-                            Toast.makeText(this, "signIn Successful ", Toast.LENGTH_SHORT).show()
-                            val result = task.result
-
-                            if(result.additionalUserInfo?.isNewUser != true){
-                                Toast.makeText(context, "This user Already Exits , Please Login Again", Toast.LENGTH_SHORT).show()
-                                intentPassing(context , LoginScreen::class.java)
-                            }else{
-                                intentPassing(this, MainActivity::class.java)
-                                finish()
-                            }
-
+                            sendVerificationEmail()
                         }else{
-                            Log.e(TAG, "Error signing in with email link", task.exception)
+                            Toast.makeText(
+                                this,
+                                "User Creation Failed: ${task.exception?.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("User Creation Failed", task.exception.toString())
                         }
-                    }.addOnFailureListener{
-                        Toast.makeText(this, "Failed to Register please check you id and password : ${it.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    }.addOnFailureListener { exception ->
+                    Toast.makeText(
+                        this,
+                        "Failed: ${exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("User Creation Failed", exception.message.toString())
                 }
-
-
-//                auth.createUserWithEmailAndPassword(email, password)
-//                    .addOnCompleteListener(context) { task ->
-//                        if (task.isSuccessful) {
-//                            Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show()
-//                            intentPassing(this, LoginScreen::class.java)
-//                            finish()
-//                        } else {
-//                            Toast.makeText(this, "Failed to Register: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
             }
         }
 
         binding.loginBtn.setOnClickListener {
-            intentPassing(this, LoginScreen::class.java)
+            refreshUser {
+                if(auth.currentUser?.isEmailVerified == true){
+                    intentPassing(this, MainActivity::class.java)
+                }else{
+                    Toast.makeText(this, "Please Verify your email Id and then Login Again", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -193,6 +155,38 @@ class SignUpScreen : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    private fun sendVerificationEmail(){
+        auth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
+            task->
+            if(task.isSuccessful){
+                Toast.makeText(
+                    this, "Verification Email Sent", Toast.LENGTH_SHORT
+                ).show()
+            }else{
+                Toast.makeText(
+                    this, "Failed to Send Email", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }?.addOnFailureListener{
+            Toast.makeText(
+                this, "Failed to Send Email", Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun refreshUser(callBack : ()-> Unit){
+        auth.currentUser?.reload()
+            ?.addOnCompleteListener{
+                task->
+            if(task.isSuccessful){
+                callBack()
+            }else{
+                Toast.makeText(this, "Failed to refresh user data", Toast.LENGTH_SHORT).show()
+                Log.e("User Refresh Failed", task.exception.toString())
+            }
+        }
     }
 
 
