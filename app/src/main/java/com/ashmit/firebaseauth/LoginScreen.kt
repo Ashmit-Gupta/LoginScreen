@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.CalendarContract.Colors
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ClickableSpan
@@ -42,7 +43,7 @@ class LoginScreen : AppCompatActivity() {
         binding = ActivityLoginScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.frameLayoutMain) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -122,7 +123,37 @@ class LoginScreen : AppCompatActivity() {
             }
         }
 
-        //setting the google login btn
+        //setting the clickable link on the forgot pwd
+        val forgotPwd = "Forgot Password?"
+        val spannableStringBuilderForgotPwd = SpannableStringBuilder(forgotPwd)
+
+        val clickableSpanForgotPwd = object :ClickableSpan(){
+            override fun onClick(widget: View) {
+                //
+                supportFragmentManager.beginTransaction().add(R.id.frameLayoutMain , ResetPasswordFragment()).commit()
+            }
+        }
+        spannableStringBuilderForgotPwd.setSpan(
+            clickableSpanForgotPwd,
+            0 ,
+            forgotPwd.length,
+            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+
+        spannableStringBuilderForgotPwd.setSpan(
+            ForegroundColorSpan(Color.BLUE),
+            0,
+            forgotPwd.length,
+            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+
+        binding.forgotPwd.text = spannableStringBuilderForgotPwd //Setting text applies all spans and styles defined in spannableStringBuilder to binding.signUp.
+        binding.forgotPwd.movementMethod = android.text.method.LinkMovementMethod.getInstance()
+
+
+
+
+    //setting the google login btn
         val googleLogin = GoogleLogin(this)
         //creating a launcher that is the db of google
         val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
@@ -135,5 +166,7 @@ class LoginScreen : AppCompatActivity() {
             launcher.launch(signInIntent)
         }
     }
+
+
 }
 

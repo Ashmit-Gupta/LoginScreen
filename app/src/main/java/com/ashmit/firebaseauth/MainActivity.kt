@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var customDialog: Dialog
+    private lateinit var updateEmailDB : Dialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,9 +118,9 @@ class MainActivity : AppCompatActivity() {
         //displaying the user' data
         displayData()
 
-        //updating users data
+
         binding.UpdateEmail.setOnClickListener {
-            reAuthentication()
+            updateEmailDialogBox()
         }
 
     }
@@ -191,25 +194,89 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    private fun reAuthentication(){
-        val intent = intent
-        val emailLink = intent.data.toString()
-        if (!FirebaseAuth.getInstance().isSignInWithEmailLink(emailLink)) {
-            Toast.makeText(this, "Invalid email link", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val credentials = EmailAuthProvider.getCredentialWithLink(auth.currentUser?.email.toString(),emailLink )
-        auth.currentUser?.reauthenticateAndRetrieveData(credentials)
-            ?.addOnCompleteListener{ task->
-                if(task.isSuccessful){
-                    Toast.makeText(this, "Re-Authentication Successful", Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(this, "Re-Authentication Failed", Toast.LENGTH_SHORT).show()
-                }
-            }?.addOnFailureListener{
-                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+    //sending verification for email
+    fun sendEmailVerification (){
+        fun sendEmailVerificationAndUpdateEmail(email: String) {
+            val user = auth.currentUser
+            if (user != null) {
+                user.sendEmailVerification()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Email Sent", Toast.LENGTH_SHORT).show()
+
+                            user.updateEmail(email)
+                                .addOnCompleteListener { updateTask ->
+                                    if (updateTask.isSuccessful) {
+                                        Toast.makeText(this, "Email Updated", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(this, "Failed to Update Email", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                        } else {
+                            Toast.makeText(this, "Failed to Send Email", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            } else {
+                Toast.makeText(this, "No current user", Toast.LENGTH_SHORT).show()
             }
+        }
+
     }
+    //updating the email
+    fun updateEmail(email :String) {
+        val user = auth.currentUser
+        if (user != null) {
+            user.sendEmailVerification()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Email Sent", Toast.LENGTH_SHORT).show()
 
+                        user.updateEmail(email)
+                            .addOnCompleteListener { updateTask ->
+                                if (updateTask.isSuccessful) {
+                                    Toast.makeText(this, "Email Updated", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this, "Failed to Update Email", Toast.LENGTH_SHORT).show()
+                                }
+                            }
 
+                    } else {
+                        Toast.makeText(this, "Failed to Send Email", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            Toast.makeText(this, "No current user", Toast.LENGTH_SHORT).show()
+        }
+    }
+    fun updateEmailDialogBox(){
+        //updating users data
+        updateEmailDB = Dialog(this)
+        updateEmailDB.setContentView(R.layout.db_layout)
+        updateEmailDB.setCancelable(false)
+
+        val btnYesUpdatePwd = updateEmailDB.findViewById<Button>(R.id.btnDBYes)
+        val btnNoUpdatePwd = updateEmailDB.findViewById<Button>(R.id.btnDBNo)
+        val title = updateEmailDB.findViewById<TextView>(R.id.dialogBoxTitle)
+        val message = updateEmailDB.findViewById<TextView>(R.id.dialogBoxMessage)
+        val email = updateEmailDB.findViewById<EditText>(R.id.dialogBoxPassword)
+
+        title.text = "Update Email"
+        message.text = "Please Enter your email for authentication"
+        email.hint = "Enter your Email"
+        email.inputType = android.text.InputType.TYPE_CLASS_TEXT
+
+        updateEmailDB.show()
+
+        btnYesUpdatePwd.setOnClickListener {
+            if(email.text.isEmpty()){
+                Toast.makeText(this, "please Enter your email", Toast.LENGTH_SHORT).show()
+            }else{
+                updateEmail(email.toString())
+            }
+        }
+        btnNoUpdatePwd.setOnClickListener {
+            updateEmailDB.dismiss()
+        }
+    }
 }
