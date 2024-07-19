@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ashmit.firebaseauth.Firebase.FirebaseAuthHelper
 import com.ashmit.firebaseauth.databinding.ActivitySignUpScreenBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -49,6 +51,11 @@ class SignUpScreen : AppCompatActivity() {
             insets
         }
 
+        //setting the clickable link / string
+        binding.txtViewLogin.text = ClickableStringBuilder().clickableText("Already have an account , Login?" , 24) {
+            startActivity(Intent(this, LoginScreen::class.java))
+        }
+        binding.txtViewLogin.movementMethod = android.text.method.LinkMovementMethod.getInstance()
 
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -67,38 +74,14 @@ class SignUpScreen : AppCompatActivity() {
         binding.signUpBtn.setOnClickListener{
             getSignUpInputs()
             if(checkCredentials()){
-                auth.createUserWithEmailAndPassword(email ,password)
-                    .addOnCompleteListener{task->
-                        if(task.isSuccessful){
-                            sendVerificationEmail()
-                        }else{
-                            Toast.makeText(
-                                this,
-                                "User Creation Failed: ${task.exception?.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            Log.e("User Creation Failed", task.exception.toString())
-                        }
-                    }.addOnFailureListener { exception ->
-                    Toast.makeText(
-                        this,
-                        "Failed: ${exception.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e("User Creation Failed", exception.message.toString())
-                }
+                FirebaseAuthHelper(this).createUser(email , password, {
+                    intentPassing(this, MainActivity::class.java)
+                } , {
+                    Toast.makeText(this, "verification email bhejne mai dikkat aa rhi h ", Toast.LENGTH_SHORT).show()
+                })
             }
         }
 
-        binding.loginBtn.setOnClickListener {
-            refreshUser {
-                if(auth.currentUser?.isEmailVerified == true){
-                    intentPassing(this, MainActivity::class.java)
-                }else{
-                    Toast.makeText(this, "Please Verify your email Id and then Login Again", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

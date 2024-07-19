@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ashmit.firebaseauth.Firebase.FirebaseAuthHelper
 import com.ashmit.firebaseauth.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -64,15 +65,10 @@ class MainActivity : AppCompatActivity() {
                 "Are you sure you want to log out ?",
                 R.drawable.baseline_logout_24
             ) {
-                auth.signOut()
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build()
-                GoogleSignIn.getClient(this , gso).signOut()
-                Toast.makeText(this, "Logout Successfull", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginScreen::class.java))
-                finish()
+               FirebaseAuthHelper(this).signOut {
+                   startActivity(Intent(this, LoginScreen::class.java))
+                   finish()
+               }
             }
         }
 
@@ -93,17 +89,11 @@ class MainActivity : AppCompatActivity() {
             if (confirmPwd.isEmpty()) {
                 Toast.makeText(this, "Please Enter your password", Toast.LENGTH_SHORT).show()
             } else {
-                val currUserEmail = auth.currentUser?.email.toString()
-                val credential = EmailAuthProvider.getCredential(currUserEmail, confirmPwd)
-                auth.currentUser?.reauthenticate(credential)
-                    ?.addOnCompleteListener() { task ->
-                        if(task.isSuccessful){
-                            deleteAccount()
-                        }
-                    }?.addOnFailureListener { task ->
-                        Toast.makeText(this, "Wrong Password : ${task.message}", Toast.LENGTH_SHORT).show()
-                        Log.d("ACCDELETEDFAILED" , task.message.toString())
-                    }
+                FirebaseAuthHelper(this).deleteAccount(confirmPwd) {
+                    //onSuccessful
+                    Toast.makeText(this, "Account Deleted Successfully", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, SignUpScreen::class.java))
+                }
             }
         }
         btnNo.setOnClickListener {
@@ -272,7 +262,9 @@ class MainActivity : AppCompatActivity() {
             if(email.text.isEmpty()){
                 Toast.makeText(this, "please Enter your email", Toast.LENGTH_SHORT).show()
             }else{
-                updateEmail(email.toString())
+
+                FirebaseAuthHelper(this).updateEmail(email.toString())
+//                updateEmail(email.toString())
             }
         }
         btnNoUpdatePwd.setOnClickListener {

@@ -117,6 +117,21 @@
                 app:layout_constraintStart_toStartOf="@+id/passwordSignUp"
                 app:layout_constraintTop_toBottomOf="@id/passwordSignUp" />
 
+
+            <TextView
+                android:id="@+id/txtViewLogin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="end"
+                android:text="Already have an account , Login?"
+                android:textSize="16sp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/signUpBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/repeatPwdSignUp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/signUpBtn"
                 android:layout_width="160dp"
@@ -132,20 +147,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/repeatPwdSignUp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginBtn"
-                android:layout_width="160dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/purple"
-                android:text="Login"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                app:cornerRadius="15dp"
-                app:layout_constraintEnd_toEndOf="@+id/signUpBtn"
-                app:layout_constraintStart_toStartOf="@+id/signUpBtn"
-                app:layout_constraintTop_toBottomOf="@id/signUpBtn" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/googleSignUpBtn"
@@ -157,17 +158,17 @@
                 android:textColor="@android:color/black"
                 android:textSize="22sp"
                 app:cornerRadius="10dp"
-                app:iconSize="30dp"
-                app:iconGravity="start"
                 app:icon="@drawable/google"
+                app:iconGravity="start"
                 app:iconPadding="2dp"
+                app:iconSize="30dp"
                 app:iconTint="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/loginBtn"
-                app:layout_constraintStart_toStartOf="@+id/loginBtn"
-                app:layout_constraintTop_toBottomOf="@id/loginBtn" />
+                app:layout_constraintEnd_toEndOf="@+id/signUpBtn"
+                app:layout_constraintStart_toStartOf="@+id/signUpBtn"
+                app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
