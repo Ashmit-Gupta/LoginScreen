@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_View">
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/nav_home"
+            android:icon="@drawable/baseline_home_filled_24"
+            android:title="Home"/>
+
+        <item android:id="@+id/nav_deleteAcc"
+            android:icon="@drawable/baseline_delete_forever_24"
+            android:title="Delete Account"/>
+
+
+        <item android:id="@+id/nav_updateEmail"
+            android:icon="@drawable/baseline_update_24"
+            android:title="Update Email"/>
+
+<!--        <item android:id="@+id/nav_logOut"-->
+<!--            android:icon="@drawable/baseline_logout_24"-->
+<!--            android:title="Logout"/>-->
+
+    </group>
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/exit"
+                android:icon="@drawable/baseline_exit_to_app_24"
+                android:title="Exit"/>
+
+            <item android:id="@+id/nav_logOut"
+                android:icon="@drawable/baseline_logout_24"
+                android:title="Logout"/>
+
+        </menu>
+    </item>
+
+</menu>

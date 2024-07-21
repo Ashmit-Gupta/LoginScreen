@@ -2,6 +2,8 @@ package com.ashmit.firebaseauth.Firebase
 
 import android.content.Context
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.ashmit.firebaseauth.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -9,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -168,4 +171,25 @@ class FirebaseAuthHelper(private var context: Context) {
             }
         }
     }
+
+    fun displayUserInfo(idName: TextView , idEmail :TextView , idImage:ImageView){
+            auth.currentUser?.let {
+                val name = it.displayName
+                val email = it.email
+                val photo = it.photoUrl
+                val emailVerified = it.isEmailVerified
+
+                idName.text = name
+                idEmail.text = email
+                Picasso.get()
+                    .load(photo)
+                    .into(idImage)
+            }?:run{
+                idImage.setImageResource(R.drawable.baseline_person_24)
+            }
+
+//        }
+
+    }
+
 }

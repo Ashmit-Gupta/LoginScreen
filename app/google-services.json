@@ -1,1 +1,48 @@
-// use your own google Json file Here 
+
+{
+  "project_info": {
+    "project_number": "179736928268",
+    "project_id": "login-signinfirebase",
+    "storage_bucket": "login-signinfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179736928268:android:2cabfcaa3f02d1334fce29",
+        "android_client_info": {
+          "package_name": "com.ashmit.firebaseauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179736928268-dopr29c41dm33kikq93sqru330lckive.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ashmit.firebaseauth",
+            "certificate_hash": "3ad7fbafbddcc5457afc5d75c6f9fba919a2d61b"
+          }
+        },
+        {
+          "client_id": "179736928268-5tmft9q5rfvb28m8u72vff9s5hve9jeg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJdhHlMJ5mnLxxeO-i8EqGJDQGc2lP-a4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179736928268-5tmft9q5rfvb28m8u72vff9s5hve9jeg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
